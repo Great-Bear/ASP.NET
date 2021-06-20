@@ -1,0 +1,64 @@
+﻿@model IEnumerable<_08_Goods_Orders.Models.Order>
+
+    @{
+        ViewData["Title"] = "Index";
+    }
+
+    <h1>Index</h1>
+
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <form asp-action="Index">
+        <label for="firstDate" class="control-label">Start date</label>
+        <input type="date" name="firstDate" value="@ViewBag.firstDate" />
+
+        <label for="secondDate" class="control-label">End date</label>
+        <input type="date" name="secondDate" value="@ViewBag.secondDate" />     
+        <br />
+        <p>Sum: @ViewBag.Sum</p>
+        <button type="submit">Search in range</button>
+    </form>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CountProducts)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateBuy)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.User)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Product)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CountProducts)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateBuyS)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.SurName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Product.Name)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

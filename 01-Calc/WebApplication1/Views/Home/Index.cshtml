@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Calc";
+}
+<form method="post">
+    <table>
+        <tr>
+            <td>
+                <label>First number:</label>
+                <br />
+                <input type="text" name="firstNum" />
+            </td>
+            <td>
+                <label>Second number::</label>
+                <br />
+                <input type="text" name="secondNum" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Choice operation:</label>
+                <br />
+                <input type="radio" name="oper" value="Plus" />Plus
+                <br />
+                <input type="radio" name="oper" value="Remove" />Remove
+                <br />
+                <input type="radio" name="oper" value="Divide" />Divide
+                <br />
+                <input type="radio" name="oper" value="Multiply" />Multiply
+                <br />
+            </td>
+
+        </tr>
+    </table>
+    <input type="submit" value="Calc" />
+</form>

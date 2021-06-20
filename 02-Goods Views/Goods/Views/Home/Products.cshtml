@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Products";
+}
+@Html.Partial("Header")
+@{
+    <table id="productsTable"> 
+        @{ 
+            int indexProduct = 0;
+    @while (indexProduct < @Model.Count)
+    {
+        <tr>
+            @for (int i = 0; (i + 1) % 5 != 0; indexProduct++, i++)
+            {
+                if(indexProduct >= @Model.Count)
+                {
+                    break;
+                }
+            <td>
+                <p><a href="~/Home/SpecificProduct/@Model[indexProduct].ID">@Model[indexProduct].Name</a></p>
+                <p>Describe @Model[indexProduct].Describe</p>
+                <img src="@Model[indexProduct].PathPhoto" />
+            </td>
+            }
+        </tr>  
+    }
+            }
+    </table>
+}
+@Html.Partial("Footer")
+
+

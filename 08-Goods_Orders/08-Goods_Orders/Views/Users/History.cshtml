@@ -1,0 +1,44 @@
+﻿@model IEnumerable<_08_Goods_Orders.Models.Order>
+
+@{
+    ViewData["Title"] = "View";
+}
+
+<h1>View</h1>
+<form asp-action="History">
+    <label for="valueSearch" class="control-label">Enter surName, or name, or id user, for search </label>
+    <input type="text" name="valueSearch" class="form-control" />
+    <button type="submit">Search</button>
+</form>
+<p>Sum: @ViewBag.Sum</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CountProducts)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateBuy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CountProducts)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateBuy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.Name)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

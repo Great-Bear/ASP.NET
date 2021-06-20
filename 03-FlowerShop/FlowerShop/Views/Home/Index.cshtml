@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<table id="orderTable">
+    <tr id="NameColumnOrder">
+        <td><p>NameFlover</p></td>
+        <td><p>Count</p></td>
+        <td><p>DeliveryAddress</p></td>
+        <td><p>TextNote</p></td>
+        <td><p>NameOrder</p></td>
+        <td><p>DeliveryDate</p></td>
+    </tr>
+    @foreach (var item in @Model)
+    {
+        <tr>
+            <td><p>@item.NameFlover</p></td>
+            <td><p>@item.Count</p></td>
+            <td><p>@item.DeliveryAddress.FullAdress</p></td>
+            <td><p>@item.TextNote</p></td>
+            <td><p>@item.NameOrder</p></td>
+            <td><p>@item.FullDate</p></td>
+        </tr>
+    }
+</table>
+
+

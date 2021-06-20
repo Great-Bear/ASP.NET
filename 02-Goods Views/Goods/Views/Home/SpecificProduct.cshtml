@@ -1,0 +1,10 @@
+﻿@{
+    ViewData["Title"] = Model.Name;
+}
+@Html.Partial("Header")
+
+<p>Name: @Model.Name</p>
+<p>Describe: @Model.Describe</p>
+<img id="picture" src="@Model.PathPhoto" />
+
+@Html.Partial("Footer")
