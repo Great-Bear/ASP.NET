@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        #mainBlock{
+            display: flex;
+            height: 100vh;
+        }
+        #header{
+            background-color: bisque;
+            text-align: center;
+        }
+        #leftPanel{
+            background-color: royalblue;
+            border-right: 4px solid;
+            flex: 1.5;
+            border-bottom: 2px solid black;
+        }
+        #ProductList{
+            display: flex;
+            flex-wrap: wrap;
+            flex: 10;          
+        }
+        #ProductList > div{
+            height: 49%;
+            width: 24%;
+            background-color: rgb(255, 255, 255);                    
+            border-right: 2px solid black;
+            border-bottom: 2px solid black;
+        }
+        #ProductList > div > img{
+            width: 80%;
+            height: 60%;
+            margin-left: 10%;
+            margin-top: 5%;        
+            background-color: rgb(78, 88, 78);
+        }
+        #ProductList > div .price{
+            color: rgb(245, 42, 42);
+            margin-left: 10%;
+            font-size: 170%;
+        }
+        #ProductList > div .nameProd{
+            margin-left: 10%;
+            font-size: 100%;
+        }
+        #footer{
+            height: 100px;
+            background-color: gray;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        Header
+    </div>
+    <div id="mainBlock">   
+        <div id="leftPanel">
+            <ul>Categories
+                <li>
+                    Item 1
+                </li>
+                <li>
+                    Item 2
+                </li>
+                <li>
+                    Item 3
+                </li>
+            </ul>
+        </div>
+        <div id="ProductList">
+            <div>
+                <img/>
+                <p class="nameProd">Name product Name product</p>
+                <p class="price">129</p>
+            </div>
+            <div>
+                <img/>
+                <p class="nameProd">Name product Name product</p>
+                <p class="price">129</p>
+            </div>
+            <div>
+                <img/>
+                <p class="nameProd">Name product Name product</p>
+                <p class="price">129</p>
+            </div>
+            <div>
+                <img/>
+                <p class="nameProd">Name product Name product</p>
+                <p class="price">129</p>
+            </div>
+            <div>
+                <img/>
+                <p class="nameProd">Name product Name product</p>
+                <p class="price">129</p>
+            </div>
+            <div>
+                <img/>
+                <p class="nameProd">Name product Name product</p>
+                <p class="price">129</p>
+            </div>
+            
+        </div>  
+    </div>
+    <div id="footer"> Footer</div>
+</body>
+</html>

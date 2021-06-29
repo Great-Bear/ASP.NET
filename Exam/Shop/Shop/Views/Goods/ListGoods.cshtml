@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Shop.Models.Goods>
+
+    @{
+        ViewData["Title"] = "Goods list";
+    }
+
+    <h1>Products</h1>
+    <div id="mainBlock">
+        <div id="leftPanel">
+            <ul>Categories
+                <li>
+                    Category 1
+                </li>
+                <li>
+                    Category 2
+                </li>
+                <li>
+                    Category 3
+                </li>
+            </ul>
+        </div>       
+        <div id="ProductList">
+            @foreach (var item in Model)
+            {
+            <div>
+                <img src="@item.Picture"/>
+                <p class="nameProd">@item.Name</p>
+                <p class="price">@item.Price</p>
+                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+            </div>
+            }
+        </div>
+    </div>
+    <a asp-action="Create" >Create</a>
