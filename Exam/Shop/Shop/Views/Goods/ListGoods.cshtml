@@ -5,9 +5,16 @@
     }
 
     <h1>Products</h1>
+    <div id="basketBlock">
+        <a asp-action="Basket">
+            <img src="~/basket.png" id="basket" />
+            <span id="basketLength">@ViewBag?.basketLength</span>
+        </a>
+    </div>
     <div id="mainBlock">
         <div id="leftPanel">
-            <ul>Categories
+            <ul>
+                Categories
                 <li>
                     Category 1
                 </li>
@@ -18,17 +25,18 @@
                     Category 3
                 </li>
             </ul>
-        </div>       
+        </div>
         <div id="ProductList">
             @foreach (var item in Model)
             {
-            <div>
-                <img src="@item.Picture"/>
-                <p class="nameProd">@item.Name</p>
-                <p class="price">@item.Price</p>
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-            </div>
+                <div>
+                    <img src="@item.Picture" />
+                    <p class="nameProd">@item.Name</p>
+                    <p class="price">@item.Price</p>
+                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                    <a asp-action ="Buy" asp-route-id="@item.ID">Buy</a>
+                </div>
             }
         </div>
     </div>
-    <a asp-action="Create" >Create</a>
+    <a asp-action="Create">Create</a>

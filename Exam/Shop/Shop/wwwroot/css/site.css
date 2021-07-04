@@ -122,10 +122,31 @@ body {
     font-size: 100%;
 }
 
-
 #ImgDetails{
     width: 300px;
     height: 300px;
     background-color: gray;
+}
+
+.price
+{
+    margin-bottom: 0;
+}
+
+#basket {
+   width: 75px;
+   height: 75px;
+}
+#basketBlock
+{
+    position: relative;
+    width:auto;
+}
+#basketLength
+{
+    position: absolute;
+    color: red;
+    top: 15px;
+    left: 40px;
 }
 

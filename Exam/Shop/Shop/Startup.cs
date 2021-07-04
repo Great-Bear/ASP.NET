@@ -29,11 +29,21 @@ namespace Shop
 
             services.AddDbContext<ShopContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("ShopContext")));
+
+            services.AddDistributedMemoryCache();
+            services.AddSession(option =>
+                option.Cookie.Name = "Session"
+            );
+
+            services.AddControllersWithViews();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSession();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
