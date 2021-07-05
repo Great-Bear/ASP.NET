@@ -7,19 +7,39 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Shop.Models;
 using System.IO;
-
+using Microsoft.AspNetCore.Http;
+using CookiesAndSessions.Extentions;
 
 namespace Shop.Controllers
 {
     public class GoodsController : Controller
     {
         private readonly ShopContext _context;
+        public List<Goods> BasketItems { get; set; } = new List<Goods>();
 
         public GoodsController(ShopContext context)
-        {
+        {        
             _context = context;
         }
         public async Task<IActionResult> ListGoods()
+        {
+            var GoodsLsit = await _context.Goods.ToListAsync();
+            string defaultPicture = TakeDefaultPicture();
+            foreach (var item in GoodsLsit)
+            {
+                if(item.Picture == null)
+                {
+                    item.Picture = defaultPicture;
+                }
+            }          
+            if (HttpContext.Session.Keys.Contains("basketLength") == false) 
+            {
+                HttpContext.Session.SetInt32("basketLength", 0);
+            }          
+            ViewBag.basketLength = HttpContext.Session.GetInt32("basketLength");
+            return View(GoodsLsit);
+        }
+        string TakeDefaultPicture()
         {
             string defaultPicture = string.Empty;
             var pictureFile = System.IO.File.Open(@".\Imgs\empty.jpg", FileMode.Open);
@@ -28,19 +48,44 @@ namespace Shop.Controllers
                 defaultPicture = "data:image / jpeg; base64," +
                                 Convert.ToBase64String(binaryReader.ReadBytes((int)pictureFile.Length));
             }
-
-
-            var GoodsLsit = await _context.Goods.ToListAsync();
-            foreach (var item in GoodsLsit)
+            return defaultPicture;
+        }
+        public async Task<IActionResult> Basket()
+        {
+            var baket = (List<Goods>)HttpContext.Session.GetObject("basket", typeof(List<Goods>));
+            string defaultPicture = TakeDefaultPicture();
+            foreach (var item in baket)
             {
-                if(item.Picture == null)
+                if (item.Picture == null)
                 {
                     item.Picture = defaultPicture;
                 }
             }
 
-            return View(GoodsLsit);
-        }      
+            return View(baket);
+        }
+
+        public IActionResult Buy(int? id)
+        {
+            int? basketLength = HttpContext.Session.GetInt32("basketLength");
+            basketLength++;
+            HttpContext.Session.SetInt32("basketLength", (int)basketLength++);
+
+            var newBasketItem = _context.Goods
+                .FirstOrDefault(goods => goods.ID == id);
+
+            if(newBasketItem != null)
+            {
+              if(HttpContext.Session.GetObject("basket", typeof(List<Goods>)) == null) 
+              {
+                    HttpContext.Session.SetObject("basket", new List<Goods>(), typeof(List<Goods>));
+              }
+               var basket = (List<Goods>)HttpContext.Session.GetObject("basket",typeof(List<Goods>));
+                basket.Add(newBasketItem);
+                HttpContext.Session.SetObject("basket", basket, typeof(List<Goods>));
+            }
+            return RedirectToAction(nameof(ListGoods));
+        }
 
         public async Task<IActionResult> Details(int? id)
         {
