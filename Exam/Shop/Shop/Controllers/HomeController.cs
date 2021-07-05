@@ -61,12 +61,6 @@ namespace Shop.Controllers
             return View();
         }
 
-
-<<<<<<< HEAD
-=======
-
-
->>>>>>> b8ddb38afee16f4f8b0772c3deb71cb0d0a90cee
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

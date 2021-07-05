@@ -9,6 +9,8 @@ using Shop.Models;
 using System.IO;
 using Microsoft.AspNetCore.Http;
 using CookiesAndSessions.Extentions;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Shop.Controllers
 {
@@ -63,6 +65,32 @@ namespace Shop.Controllers
             }
 
             return View(baket);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var sha256 = new SHA256Managed();
+                var passwordHash = Convert.ToBase64String(
+                    sha256.ComputeHash(Encoding.UTF8.GetBytes(model.Password)));
+
+                User user = _context.Users
+                    .Include(user => user.Role)
+                    .FirstOrDefault(u => u.Email == model.Email && u.Password == passwordHash);
+
+                if (user != null)
+                {
+                    // await Authenticate(user);
+                    return RedirectToAction("Index", "Home");
+                }
+
+                ModelState.AddModelError("", "Invalid login or password");
+            }
+
+            return View(model);
         }
 
         public IActionResult Buy(int? id)
