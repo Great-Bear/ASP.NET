@@ -97,7 +97,7 @@ body {
 }
 
 #ProductList > div {
-    height: 49%;
+    height: 350px;
     width: 24%;
     background-color: rgb(255, 249, 249);
     border-right: 2px solid black;

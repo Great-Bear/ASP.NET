@@ -12,6 +12,9 @@ namespace Shop.Models
         public string Name { get; set; }
         public string Describe { get; set; }
         public float Price { get; set; }
+        public int UserId { get; set; }
+        public User User { get; set; }
+
         [NotMapped]
         public string Picture { get; set; } 
     }

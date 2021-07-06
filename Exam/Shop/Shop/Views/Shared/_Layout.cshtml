@@ -29,11 +29,25 @@
                         </li>
                     </ul>
                 </div>
-                <div>
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                @if (Context.User.IsInRole("user"))
+                {
+                    <div>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Goods" asp-action="Create">Create</a>
+                    </div>
+                    <div>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                    </div>
+                }
+                @if (Context.User.IsInRole("user") == false)
+                {
+                    <div>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>                    
+                    </div>
+                }
+                    <div>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                    </div>
                 </div>
-            </div>
         </nav>
     </header>
     <div class="container">
