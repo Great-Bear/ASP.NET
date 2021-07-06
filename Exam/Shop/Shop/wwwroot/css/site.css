@@ -70,12 +70,8 @@ body {
   line-height: 60px; /* Vertically center the text there */
 }
 
-
-
-
 #mainBlock {
-    display: flex;
-    height: 100vh;
+    display: flex; 
 }
 
 #header {
@@ -84,10 +80,17 @@ body {
 }
 
 #leftPanel {
-    background-color: royalblue;
+    background-color: rgb(206, 228, 209);
     border-right: 4px solid;
     flex: 1.5;
     border-bottom: 2px solid black;
+}
+#leftPanel > ul > li:hover {
+    color: red;
+    cursor: pointer;
+}
+#leftPanel > ul > li > a:hover {
+    color: white;
 }
 
 #ProductList {
@@ -102,6 +105,10 @@ body {
     background-color: rgb(255, 249, 249);
     border-right: 2px solid black;
     border-bottom: 2px solid black;
+}
+
+#ProductList > div:hover {
+    background-color: rgb(240, 232, 232);
 }
 
 #ProductList > div > img {
@@ -137,10 +144,11 @@ body {
    width: 75px;
    height: 75px;
 }
-#basketBlock
-{
-    position: relative;
-    width:auto;
+#basketBlock {
+    position: absolute;
+    width: auto;
+    right: 150px;
+    top: 55px;
 }
 #basketLength
 {
@@ -148,5 +156,12 @@ body {
     color: red;
     top: 15px;
     left: 40px;
+}
+.Links:hover {
+    background-color: rgb(240, 232, 232);
+}
+.typeProd
+{
+    margin-left: 20px;
 }
 

@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,8 +21,6 @@ namespace Shop.Controllers
         public AccountController(ShopContext context)
         {
             _context = context;
-            var a = _context.Roles.ToList();
-            var b = _context.Users.ToList();
             if(!_context.Roles.Any())
             {
                 _context.Roles.Add(new Role { Name = "user" });
@@ -50,8 +47,6 @@ namespace Shop.Controllers
                 var passwordHash = Convert.ToBase64String(
                     sha256.ComputeHash(Encoding.UTF8.GetBytes(model.Password)));
 
-                var a = _context.Roles.ToList();
-                var b = _context.Users.ToList();
 
                 User user = _context.Users
                     .Include(user => user.Role)

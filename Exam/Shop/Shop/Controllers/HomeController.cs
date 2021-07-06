@@ -38,7 +38,6 @@ namespace Shop.Controllers
                     a[i] = "data:image / jpeg; base64," +
                                     Convert.ToBase64String(binaryReader.ReadBytes((int)file.Length));
                 }
-
             }
 
             return View(a);

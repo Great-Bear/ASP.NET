@@ -21,27 +21,38 @@
         <ul>
             Categories
             <li>
-                Category 1
+                <a asp-action="ListGoods">All</a>
             </li>
             <li>
-                Category 2
+                <a asp-action="ListGoods" asp-route-sortName="Type 1">Type 1</a>
             </li>
             <li>
-                Category 3
+                <a asp-action="ListGoods" asp-route-sortName="Type 2">Type 2</a>
             </li>
         </ul>
     </div>
     <div id="ProductList">
         @foreach (var item in Model)
-        {
+        {      
         <div>
             <img src="@item.Picture" />
             <p class="nameProd">@item.Name</p>
+            <span class="typeProd">@item.Type</span>
             <p class="price">@item.Price</p>
+
             <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-            <a asp-action="Buy" asp-route-id="@item.ID">Buy</a>
+            @if (ViewBag?.IdCurrUser == item.UserId)
+            {
+                <a asp-action="Edit" asp-route-id="@item.ID">Edit |</a> 
+                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+            }
+            @if (ViewBag?.IdCurrUser != item.UserId)
+            {
+                <a asp-action="Buy" asp-route-id="@item.ID">Buy</a>
+            }
         </div>
-        }
-    </div>
+        
+            }
+</div>
 </div>
 

@@ -8,6 +8,7 @@
 
 <h4>Goods</h4>
 <hr />
+<img id="ImgDetails" src="@Model.Picture" />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
@@ -36,7 +37,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="ListGoods">Back to List</a>
 </div>
 
 @section Scripts {

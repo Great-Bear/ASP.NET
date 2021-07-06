@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using CookiesAndSessions.Extentions;
 using System.Security.Cryptography;
 using System.Text;
+using Shop.ViewModels;
 
 namespace Shop.Controllers
 {
@@ -23,23 +24,40 @@ namespace Shop.Controllers
         {        
             _context = context;
         }
-        public async Task<IActionResult> ListGoods()
+        public async Task<IActionResult> ListGoods(string sortName = "")
         {
-            var GoodsLsit = await _context.Goods.ToListAsync();
-            string defaultPicture = TakeDefaultPicture();
-            foreach (var item in GoodsLsit)
+            if (sortName == "")
             {
-                if(item.Picture == null)
+                var GoodsLsit = await _context.Goods.ToListAsync();
+                string defaultPicture = TakeDefaultPicture();
+                foreach (var item in GoodsLsit)
                 {
-                    item.Picture = defaultPicture;
+                    if (item.Picture == null)
+                    {
+                        item.Picture = defaultPicture;
+                    }
                 }
-            }          
-            if (HttpContext.Session.Keys.Contains("basketLength") == false) 
+                if (HttpContext.Session.Keys.Contains("basketLength") == false)
+                {
+                    HttpContext.Session.SetInt32("basketLength", 0);
+                }
+
+                var listClaims = HttpContext.User.Claims.ToList();
+                if (HttpContext.User.Claims.ToList().Count > 0)
+                    ViewBag.IdCurrUser = int.Parse(listClaims[2].Value);
+
+                ViewBag.basketLength = HttpContext.Session.GetInt32("basketLength");
+                return View(GoodsLsit);
+            }
+            else 
             {
-                HttpContext.Session.SetInt32("basketLength", 0);
-            }          
-            ViewBag.basketLength = HttpContext.Session.GetInt32("basketLength");
-            return View(GoodsLsit);
+                var GoodsLsit = await _context.Goods.Where(good => good.Type == sortName).ToListAsync();
+                foreach (var item in GoodsLsit)
+                {
+                   LoadPicture(item);
+                }
+                return View(GoodsLsit);
+            }
         }
         string TakeDefaultPicture()
         {
@@ -104,16 +122,8 @@ namespace Shop.Controllers
             {
                 return NotFound();
             }
-            if(goods.Picture == null) 
-            {
-                var picture = System.IO.File.Open(@".\Imgs\empty.jpg", FileMode.Open);
-                using (var binaryReader = new BinaryReader(picture))
-                {
-                    goods.Picture = "data:image / jpeg; base64," +
-                                    Convert.ToBase64String(binaryReader.ReadBytes((int)picture.Length));
-                }
-            }
-            
+            LoadPicture(goods);
+
             return View(goods);
         }
 
@@ -123,22 +133,37 @@ namespace Shop.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost]        
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,Describe,Price")] Goods goods)
+        public async Task<IActionResult> Create([Bind("ID,Name,Describe,Price,Type")] Goods goods, IFormFile uploadedFile)
         {
-
+          
             if (ModelState.IsValid)
             {
                 var listClaims = HttpContext.User.Claims.ToList();
                 goods.UserId = int.Parse(listClaims[2].Value);
                 _context.Add(goods);
                 await _context.SaveChangesAsync();
+
+          
+
                 return RedirectToAction(nameof(ListGoods));
             }
-            return View(goods);
+            return View(null);
         }
-
+        private void LoadPicture(Goods goods) 
+        {
+            if (goods.Picture == null)
+            {
+                var picture = System.IO.File.Open(@".\Imgs\empty.jpg", FileMode.Open);
+                using (var binaryReader = new BinaryReader(picture))
+                {
+                    goods.Picture = "data:image / jpeg; base64," +
+                                    Convert.ToBase64String(binaryReader.ReadBytes((int)picture.Length));
+                }
+                
+            }
+        }
 
         public async Task<IActionResult> Edit(int? id)
         {
@@ -152,6 +177,7 @@ namespace Shop.Controllers
             {
                 return NotFound();
             }
+            LoadPicture(goods);
             return View(goods);
         }
 
@@ -167,6 +193,8 @@ namespace Shop.Controllers
 
             if (ModelState.IsValid)
             {
+                var listClaims = HttpContext.User.Claims.ToList();               
+                goods.UserId = int.Parse(listClaims[2].Value);
                 try
                 {
                     _context.Update(goods);
@@ -183,7 +211,7 @@ namespace Shop.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(ListGoods));
             }
             return View(goods);
         }
@@ -202,6 +230,7 @@ namespace Shop.Controllers
             {
                 return NotFound();
             }
+            LoadPicture(goods);
 
             return View(goods);
         }
@@ -214,7 +243,7 @@ namespace Shop.Controllers
             var goods = await _context.Goods.FindAsync(id);
             _context.Goods.Remove(goods);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(ListGoods));
         }
 
         private bool GoodsExists(int id)

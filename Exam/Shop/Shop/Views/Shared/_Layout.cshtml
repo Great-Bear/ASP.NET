@@ -18,33 +18,33 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
+                        <li  class="Links">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Goods" asp-action="ListGoods">Goods list</a>
                         </li>
-                        <li class="nav-item">
+                        <li  class="Links">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">About</a>
                         </li>
-                        <li>
+                        <li class="Links">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="TestPicture">Test picture</a>
                         </li>
                     </ul>
                 </div>
                 @if (Context.User.IsInRole("user"))
                 {
-                    <div>
+                    <div class="Links">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Goods" asp-action="Create">Create</a>
                     </div>
-                    <div>
+                    <div class="Links">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
                     </div>
                 }
                 @if (Context.User.IsInRole("user") == false)
                 {
-                    <div>
+                    <div class="Links">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>                    
                     </div>
                 }
-                    <div>
+                    <div class="Links">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
                     </div>
                 </div>

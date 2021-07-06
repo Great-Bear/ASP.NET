@@ -1,22 +1,18 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Shop.Models
+namespace Shop.ViewModels
 {
-    public class Goods
+    public class GoodsViewModel
     {
-        public int ID { get; set; }
         public string Name { get; set; }
         public string Describe { get; set; }
         public float Price { get; set; }
-        public string Type { get; set; }
         public int UserId { get; set; }
-        public User User { get; set; }
-
-        [NotMapped]
-        public string Picture { get; set; } 
+        public FormFile Picture { get; set; }
     }
 }

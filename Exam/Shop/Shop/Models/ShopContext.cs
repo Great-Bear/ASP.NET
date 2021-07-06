@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Shop.Models;
+using Shop.ViewModels;
 
 namespace Shop.Models
 {
