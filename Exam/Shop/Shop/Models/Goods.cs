@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -16,7 +17,6 @@ namespace Shop.Models
         public int UserId { get; set; }
         public User User { get; set; }
 
-        [NotMapped]
-        public string Picture { get; set; } 
+        public string Picture { get; set; }
     }
 }

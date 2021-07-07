@@ -71,7 +71,7 @@ body {
 }
 
 #mainBlock {
-    display: flex; 
+    display: flex;
 }
 
 #header {
@@ -100,8 +100,8 @@ body {
 }
 
 #ProductList > div {
-    height: 350px;
-    width: 24%;
+    height: 360px;
+    width: 290px;
     background-color: rgb(255, 249, 249);
     border-right: 2px solid black;
     border-bottom: 2px solid black;
@@ -157,11 +157,27 @@ body {
     top: 15px;
     left: 40px;
 }
+#NoResult
+{
+    width: 300px;
+    height:300px;
+    float:left;
+    margin-left: 300px;
+}
+#NoResulText {
+    text-align: center;
+    margin-left: 420px;
+}
 .Links:hover {
     background-color: rgb(240, 232, 232);
 }
 .typeProd
 {
     margin-left: 20px;
+}
+.container
+{
+    margin-left: 50px;
+    width:auto;
 }
 

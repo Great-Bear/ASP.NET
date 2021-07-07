@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <None Include="wwwroot\basket.png" />
+    <None Include="wwwroot\Imgs\SadSmile.png" />
   </ItemGroup>
 
   <ItemGroup>

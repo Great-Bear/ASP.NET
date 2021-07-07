@@ -12,6 +12,7 @@ using CookiesAndSessions.Extentions;
 using System.Security.Cryptography;
 using System.Text;
 using Shop.ViewModels;
+using System.Threading;
 
 namespace Shop.Controllers
 {
@@ -29,13 +30,9 @@ namespace Shop.Controllers
             if (sortName == "")
             {
                 var GoodsLsit = await _context.Goods.ToListAsync();
-                string defaultPicture = TakeDefaultPicture();
                 foreach (var item in GoodsLsit)
                 {
-                    if (item.Picture == null)
-                    {
-                        item.Picture = defaultPicture;
-                    }
+                        LoadPicture(item);
                 }
                 if (HttpContext.Session.Keys.Contains("basketLength") == false)
                 {
@@ -51,7 +48,7 @@ namespace Shop.Controllers
             }
             else 
             {
-                var GoodsLsit = await _context.Goods.Where(good => good.Type == sortName).ToListAsync();
+                var GoodsLsit = await _context.Goods.Where(good => good.Type == "type 4 ").ToListAsync();
                 foreach (var item in GoodsLsit)
                 {
                    LoadPicture(item);
@@ -136,16 +133,23 @@ namespace Shop.Controllers
         [HttpPost]        
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,Name,Describe,Price,Type")] Goods goods, IFormFile uploadedFile)
-        {
-          
+        {          
             if (ModelState.IsValid)
             {
                 var listClaims = HttpContext.User.Claims.ToList();
                 goods.UserId = int.Parse(listClaims[2].Value);
+                goods.Picture = goods.UserId.ToString() + uploadedFile.FileName;
                 _context.Add(goods);
                 await _context.SaveChangesAsync();
 
-          
+                if (uploadedFile != null)
+                {
+                    string path = @".\Imgs\" + goods.UserId.ToString() + uploadedFile.FileName;
+                    using (var fileStream = new FileStream(path, FileMode.Create))
+                    {
+                        await uploadedFile.CopyToAsync(fileStream);
+                    }
+                }
 
                 return RedirectToAction(nameof(ListGoods));
             }
@@ -153,15 +157,17 @@ namespace Shop.Controllers
         }
         private void LoadPicture(Goods goods) 
         {
-            if (goods.Picture == null)
+            string fileName = goods.Picture;
+            if (fileName == null || System.IO.File.Exists(@$".\Imgs\{fileName}") == false)
             {
-                var picture = System.IO.File.Open(@".\Imgs\empty.jpg", FileMode.Open);
-                using (var binaryReader = new BinaryReader(picture))
-                {
-                    goods.Picture = "data:image / jpeg; base64," +
-                                    Convert.ToBase64String(binaryReader.ReadBytes((int)picture.Length));
-                }
-                
+                fileName = "empty.jpg";
+            }
+            var picture = System.IO.File.Open(@$".\Imgs\{fileName}", FileMode.Open);
+
+            using (var binaryReader = new BinaryReader(picture))
+            {
+                goods.Picture = "data:image / jpeg; base64," +
+                                Convert.ToBase64String(binaryReader.ReadBytes((int)picture.Length));
             }
         }
 
@@ -184,19 +190,35 @@ namespace Shop.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Describe,Price")] Goods goods)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Describe,Price")] Goods goods, IFormFile uploadedFile)
         {
             if (id != goods.ID)
             {
                 return NotFound();
             }
+            goods = _context.Goods.FirstOrDefault(good => good.ID == goods.ID);
 
             if (ModelState.IsValid)
             {
                 var listClaims = HttpContext.User.Claims.ToList();               
                 goods.UserId = int.Parse(listClaims[2].Value);
+                
                 try
                 {
+                    if (uploadedFile != null)
+                    { 
+                       if(goods.Picture != "empty.jpg" && goods.Picture != null && System.IO.File.Exists(@$".\Imgs\{goods.Picture}") != false)
+                          System.IO.File.Delete(@".\Imgs\" + goods.Picture);
+                        
+           
+                        string path = @".\Imgs\" + goods.UserId.ToString() + uploadedFile.FileName;
+                        goods.Picture = goods.UserId.ToString() + uploadedFile.FileName;
+                        using (var fileStream = new FileStream(path, FileMode.Create))
+                        {
+                            await uploadedFile.CopyToAsync(fileStream);
+                        }
+                    }
+
                     _context.Update(goods);
                     await _context.SaveChangesAsync();
                 }
@@ -213,8 +235,10 @@ namespace Shop.Controllers
                 }
                 return RedirectToAction(nameof(ListGoods));
             }
+            
             return View(goods);
         }
+
 
 
         public async Task<IActionResult> Delete(int? id)
@@ -223,7 +247,7 @@ namespace Shop.Controllers
             {
                 return NotFound();
             }
-
+           
             var goods = await _context.Goods
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (goods == null)
@@ -241,6 +265,12 @@ namespace Shop.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var goods = await _context.Goods.FindAsync(id);
+
+            if (goods.Picture != "empty.jpg" && goods.Picture != null && System.IO.File.Exists(@$".\Imgs\{goods.Picture}") != false)
+               
+            System.IO.File.Delete(@".\Imgs\" + goods.Picture);
+               
+
             _context.Goods.Remove(goods);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(ListGoods));
