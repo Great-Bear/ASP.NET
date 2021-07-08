@@ -11,7 +11,7 @@
 }
 
 <div id="basketBlock">
-    <a asp-action="Basket">
+    <a asp-controller="Basket" asp-action="Basket">
         <img src="~/basket.png" id="basket" />
         <span id="basketLength">@ViewBag?.basketLength</span>
     </a>

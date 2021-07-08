@@ -147,7 +147,7 @@ body {
 #basketBlock {
     position: absolute;
     width: auto;
-    right: 150px;
+    right: 155px;
     top: 55px;
 }
 #basketLength
@@ -181,3 +181,7 @@ body {
     width:auto;
 }
 
+.pb-3
+{
+    width:1800px;
+}

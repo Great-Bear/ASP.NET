@@ -29,6 +29,12 @@
                         </li>
                     </ul>
                 </div>
+                @if (Context.User.IsInRole("admin")) 
+                {
+                    <div class="Links">
+                        <a class="nav-link" text-dark asp-area="" asp-controller="Admin" asp-action="listOrders">Orders </a>
+                    </div>
+                }
                 @if (Context.User.IsInRole("user"))
                 {
                     <div class="Links">
@@ -41,7 +47,7 @@
                 @if (Context.User.IsInRole("user") == false)
                 {
                     <div class="Links">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>                    
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
                     </div>
                 }
                     <div class="Links">

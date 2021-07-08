@@ -56,33 +56,6 @@ namespace Shop.Controllers
                 return View(GoodsLsit);
             }
         }
-        string TakeDefaultPicture()
-        {
-            string defaultPicture = string.Empty;
-            var pictureFile = System.IO.File.Open(@".\Imgs\empty.jpg", FileMode.Open);
-            using (var binaryReader = new BinaryReader(pictureFile))
-            {
-                defaultPicture = "data:image / jpeg; base64," +
-                                Convert.ToBase64String(binaryReader.ReadBytes((int)pictureFile.Length));
-            }
-            return defaultPicture;
-        }
-        public async Task<IActionResult> Basket()
-        {
-            var baket = (List<Goods>)HttpContext.Session.GetObject("basket", typeof(List<Goods>));
-            string defaultPicture = TakeDefaultPicture();
-            foreach (var item in baket)
-            {
-                if (item.Picture == null)
-                {
-                    item.Picture = defaultPicture;
-                }
-            }
-
-            return View(baket);
-        }
-
-
 
         public IActionResult Buy(int? id)
         {
@@ -155,7 +128,7 @@ namespace Shop.Controllers
             }
             return View(null);
         }
-        private void LoadPicture(Goods goods) 
+        public void LoadPicture(Goods goods) 
         {
             string fileName = goods.Picture;
             if (fileName == null || System.IO.File.Exists(@$".\Imgs\{fileName}") == false)

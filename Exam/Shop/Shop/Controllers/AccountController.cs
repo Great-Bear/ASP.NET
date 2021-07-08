@@ -28,7 +28,7 @@ namespace Shop.Controllers
             }
             if (!_context.Users.Any())
             {
-                _context.Users.Add(new User { Email = "admin@admin.com", Password = "A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=", RoleId = 2 });
+                _context.Users.Add(new Users { Email = "admin@admin.com", Password = "A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=", RoleId = 2 });
             }
         }
 
@@ -48,7 +48,7 @@ namespace Shop.Controllers
                     sha256.ComputeHash(Encoding.UTF8.GetBytes(model.Password)));
 
 
-                User user = _context.Users
+                Users user = _context.Users
                     .Include(user => user.Role)
                     .FirstOrDefault(u => u.Email == model.Email && u.Password == passwordHash);
 
@@ -78,12 +78,12 @@ namespace Shop.Controllers
                 var passwordHash = Convert.ToBase64String(
                     sha256.ComputeHash(Encoding.UTF8.GetBytes(model.Password)));
 
-                User user = await _context.Users
+                Users user = await _context.Users
                     .FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == passwordHash);
 
                 if (user == null)
                 {
-                    user = new User
+                    user = new Users
                     {
                         Email = model.Email,
                         Password = passwordHash,
@@ -114,7 +114,7 @@ namespace Shop.Controllers
             await HttpContext.SignOutAsync();
             return RedirectToAction("ListGoods", "Goods");
         }
-        private async Task Authenticate(User user)
+        private async Task Authenticate(Users user)
         {
             var claims = new List<Claim>
             {

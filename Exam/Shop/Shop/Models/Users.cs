@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Shop.Models
 {
-    public class User
+    public class Users
     {
         public int Id { get; set; }
         public string Email { get; set; }
@@ -15,5 +15,6 @@ namespace Shop.Models
         public Role Role { get; set; }
 
         public List<Goods> Goods { get; set; }
+        public List<Order> Orders { get; set; }
     }
 }
