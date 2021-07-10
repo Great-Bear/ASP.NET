@@ -1,5 +1,7 @@
 ﻿using CookiesAndSessions.Extentions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Shop.Models;
 using System;
 using System.Collections.Generic;
@@ -20,13 +22,80 @@ namespace Shop.Controllers
         }
         public async Task<IActionResult> Basket()
         {
-            var baket = (List<Goods>)HttpContext.Session.GetObject("basket", typeof(List<Goods>));
-            foreach (var item in baket)
+            var basket = (List<Goods>)HttpContext.Session.GetObject("basket", typeof(List<Goods>));
+
+            if (basket == null)
             {
-                    LoadPicture(item);
+                basket = new List<Goods>();
             }
 
-            return View(baket);
+            foreach (var item in basket)
+            {
+                    LoadPicture(item);
+            }      
+            return View(basket);
+        }
+        public IActionResult DeleteItem(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var goods =  _context.Goods
+                .FirstOrDefault(m => m.ID == id);
+            if (goods == null)
+            {
+                return NotFound();
+            }
+            LoadPicture(goods);
+
+            return View(goods);
+        }
+        public IActionResult DeleteAll()
+        {
+            var basket = (List<Goods>)HttpContext.Session.GetObject("basket", typeof(List<Goods>));
+            foreach (var item in basket)
+            {
+                LoadPicture(item);
+            }
+            return View(basket);
+        }
+
+        public IActionResult DeleteConfirmed(int id, bool all = false)
+        {
+            if (all) 
+            {
+                HttpContext.Session.SetObject("basket", new List<Goods>(), typeof(List<Goods>));
+                HttpContext.Session.SetInt32("basketLength", 0);     
+                return RedirectToAction("ListGoods", "Goods");
+            }
+
+            RemoveItemFormBasket(id);
+
+            return RedirectToAction(nameof(Basket));
+        }
+
+        public IActionResult Buy(int idGood)
+        {
+            var listClaims = HttpContext.User.Claims.ToList();
+            int idUser = int.Parse(listClaims[2].Value);
+            _context.Orders.Add(new Order { GoodId = idGood, UserId = idUser });
+            _context.SaveChanges();
+
+            RemoveItemFormBasket(idGood);
+
+            return RedirectToAction(nameof(Basket));
+        }
+
+        private void RemoveItemFormBasket(int idItem) 
+        {
+            var basket = (List<Goods>)HttpContext.Session.GetObject("basket", typeof(List<Goods>));
+            basket.RemoveAll(item => item.ID == idItem);
+
+            HttpContext.Session.SetObject("basket", basket, typeof(List<Goods>));
+            var lengthBasket = HttpContext.Session.GetInt32("basketLength");
+            HttpContext.Session.SetInt32("basketLength", (int)--lengthBasket);
         }
 
         public void LoadPicture(Goods goods)
@@ -43,13 +112,6 @@ namespace Shop.Controllers
                 goods.Picture = "data:image / jpeg; base64," +
                                 Convert.ToBase64String(binaryReader.ReadBytes((int)picture.Length));
             }
-        }
-
-        public void Buy(int idGood) 
-        {
-            var listClaims = HttpContext.User.Claims.ToList();
-            int idUser = int.Parse(listClaims[2].Value);
-            _context.Orders.Add(new Order { GoodId = idGood, UserId = idUser });
         }
     }
 

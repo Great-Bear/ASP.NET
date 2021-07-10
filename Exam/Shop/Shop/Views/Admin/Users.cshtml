@@ -1,0 +1,12 @@
+﻿@model IEnumerable<Shop.Models.Users>
+
+@{
+    ViewData["Title"] = "Goods list";
+}
+    <a asp-controller="Account" asp-action="Register" class="btn btn btn-primary">Add new User</a>
+    <ul>
+        @foreach(var item in @Model)
+        {
+            <li>@item.Email | @item.Role.Name | <a asp-controller="Account" asp-action="Edit" asp-route-IdUser="@item.Id">Edit</a></li>
+        }
+    </ul>

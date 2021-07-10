@@ -16,6 +16,11 @@
         <span id="basketLength">@ViewBag?.basketLength</span>
     </a>
 </div>
+<form asp-action="ListGoods"  method="post">
+    <label for="valueSearch">Enter value for search: </label>
+    <input type="text" name="valueSearch" name="valueSearch" placeholder="All" />
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
 <div id="mainBlock">
     <div id="leftPanel">
         <ul>
@@ -34,30 +39,42 @@
     <div id="ProductList">
         @if (Model.Any())
         {
-            @foreach (var item in Model)
+            @foreach(var item in Model)
             {
-                <div>
-                    <img src="@item.Picture" />
-                    <p class="nameProd">@item.Name</p>
-                    <span class="typeProd">@item.Type</span>
-                    <p class="price">@item.Price</p>
+        <div>
+            <img src="@item.Picture" />
+            <p class="nameProd">@item.Name</p>
+            <span class="typeProd">@item.Type</span>
+            <p class="price">@item.Price</p>
 
-                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                    @if (ViewBag?.IdCurrUser == item.UserId)
-                    {
-                        <a asp-action="Edit" asp-route-id="@item.ID">Edit |</a>
-                        <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-                    }
-                    @if (ViewBag?.IdCurrUser != item.UserId)
-                    {
-                        <a asp-action="Buy" asp-route-id="@item.ID">Buy</a>
-                    }
-                </div>
+            <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+            @if (ViewBag?.IdCurrUser == item.UserId)
+            {
+                <a asp-action="Edit" asp-route-id="@item.ID">Edit |</a>
+                <a asp-action="Delete" asp-route-id="@item.ID">Delete |</a>
+            }
+            @if (ViewBag?.IdCurrUser != item.UserId && Context.User.IsInRole("admin") == false)
+            {
+                if (item.State == false)
+                {
+                    <span>Buy |</span>
+                }
+                else
+                {
+                    <a asp-action="Buy" asp-route-id="@item.ID">Buy |</a>
+                }
+            }
+            @if (Context.User.IsInRole("admin") && ViewBag?.IdCurrUser != @item.UserId)
+            {
+                <a asp-action="Edit" asp-route-id="@item.ID">Edit |</a>
+            }
+        </div>
             }
         }
         @if (Model.Any() == false)
         {
             <img id="NoResult" src="~/Imgs/SadSmile.png"/>
+            <br />
             <p id="NoResulText">No result</p>
         }
     </div>

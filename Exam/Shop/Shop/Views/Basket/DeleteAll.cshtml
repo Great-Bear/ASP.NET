@@ -1,0 +1,24 @@
+﻿@model IEnumerable<Shop.Models.Goods>
+
+    @{
+        ViewData["Title"] = "View";
+    }
+
+    <h1>Basket</h1>
+    <h2>Are sure want delete all item from basket?</h2>
+
+      <a asp-action="DeleteConfirmed" class="btn btn-danger" asp-route-all="@true">Delete All</a>
+
+    <div id="ProductList">
+        @foreach (var item in Model)
+        {
+            <div>
+                <img src="@item.Picture" />
+                <p class="nameProd">@item.Name</p>
+                <p class="price">@item.Price</p>
+                <a asp-action="Details" asp-controller="Goods" asp-route-id="@item.ID" asp-route-fromBasket="@true">Details</a> |
+                <a asp-action="DeleteItem" asp-route-id="@item.ID">Delete</a> |
+                <a asp-action="Buy" asp-route-id="@item.ID">Buy</a>
+            </div>
+        }
+    </div>

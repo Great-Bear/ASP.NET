@@ -20,16 +20,7 @@ namespace Shop.Controllers
 
         public AccountController(ShopContext context)
         {
-            _context = context;
-            if(!_context.Roles.Any())
-            {
-                _context.Roles.Add(new Role { Name = "user" });
-                _context.Roles.Add(new Role { Name = "admin" });
-            }
-            if (!_context.Users.Any())
-            {
-                _context.Users.Add(new Users { Email = "admin@admin.com", Password = "A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=", RoleId = 2 });
-            }
+            _context = context;           
         }
 
         [HttpGet]
@@ -133,6 +124,28 @@ namespace Shop.Controllers
             ClaimsPrincipal principal = new ClaimsPrincipal(identity);
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+        }
+
+        public IActionResult Edit(int IdUser) 
+        {
+            var user = _context.Users.FirstOrDefault(user => user.Id == IdUser);
+
+            ViewBag.CurrentRoleId = _context.Roles.FirstOrDefault(role => role.Id == user.RoleId).Id;
+            ViewData["IDM"] = _context.Roles.FirstOrDefault(role => role.Id == user.RoleId).Id;
+
+            ViewBag.List = _context.Roles.ToList();
+
+
+
+            return View(user);
+        }
+        public IActionResult EditRole(string Role, int IdUser)
+        {
+            _context.Users.FirstOrDefault(user => user.Id == IdUser).RoleId =
+            _context.Roles.FirstOrDefault(role => role.Name == Role).Id;
+            _context.SaveChanges();
+
+            return RedirectToAction("Users","Admin");
         }
     }
 }

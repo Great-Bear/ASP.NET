@@ -10,15 +10,23 @@ namespace Shop.Models
 {
     public class ShopContext : DbContext
     {
-        public ShopContext (DbContextOptions<ShopContext> options)
-            : base(options)
-        {
-            Database.EnsureCreated();
-        }
-
         public DbSet<Goods> Goods { get; set; }
         public DbSet<Users> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Order> Orders { get; set; }
+
+        public ShopContext (DbContextOptions<ShopContext> options)
+            : base(options)
+        {
+            Database.EnsureCreated();           
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder
+                .Entity<Order>()
+                .HasOne(e => e.User)
+                .WithMany(e => e.Orders)
+                .OnDelete(DeleteBehavior.NoAction);
+        }
     }
 }

@@ -27,8 +27,15 @@ namespace Shop.Controllers
                 LoadPicture(item.Good);
             }
 
-            return View();
+            return View(Orders);
         }
+        public IActionResult Users()
+        {
+            var ListUsers = _context.Users.Include(user => user.Role).ToList();
+            return View(ListUsers);
+        }
+
+
         public void LoadPicture(Goods goods)
         {
             string fileName = goods.Picture;

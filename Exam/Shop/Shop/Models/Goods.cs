@@ -14,6 +14,7 @@ namespace Shop.Models
         public string Describe { get; set; }
         public float Price { get; set; }
         public string Type { get; set; }
+        public bool State { get; set; } = true;
         public int UserId { get; set; }
         public Users User { get; set; }
 

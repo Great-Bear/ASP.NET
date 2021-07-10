@@ -18,42 +18,48 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
-                        <li  class="Links">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Goods" asp-action="ListGoods">Goods list</a>
-                        </li>
-                        <li  class="Links">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">About</a>
+                        <li class="Links">
+                            <a class="nav-link text-dark" asp-controller="Goods" asp-action="ListGoods">Goods list</a>
                         </li>
                         <li class="Links">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="TestPicture">Test picture</a>
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="About">About</a>
                         </li>
                     </ul>
                 </div>
-                @if (Context.User.IsInRole("admin")) 
-                {
+                    @if (Context.User.IsInRole("admin"))
+                    {
+                        <div class="Links">
+                            <a class="nav-link text-dark" asp-controller="Admin" asp-action="listOrders">Orders </a>
+                        </div>
+                        <div class="Links">
+                            <a class="nav-link text-dark" asp-controller="Goods" asp-action="Create">Create</a>
+                        </div>
+                        <div class="Links">
+                            <a class="nav-link text-dark" asp-controller="Account" asp-action="Logout">Logout</a>
+                        </div>
+                        <div class="Links">
+                            <a class="nav-link text-dark" asp-controller="Admin" asp-action="Users">Users</a>
+                        </div>
+                    }
+                    @if (Context.User.IsInRole("user"))
+                    {
+                        <div class="Links">
+                            <a class="nav-link text-dark" asp-controller="Goods" asp-action="Create">Create</a>
+                        </div>
+                        <div class="Links">
+                            <a class="nav-link text-dark" asp-controller="Account" asp-action="Logout">Logout</a>
+                        </div>
+                    }
+                    @if (Context.User.IsInRole("user") == false && Context.User.IsInRole("admin") == false)
+                    {
+                        <div class="Links">
+                            <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Login</a>
+                        </div>
+                    }
                     <div class="Links">
-                        <a class="nav-link" text-dark asp-area="" asp-controller="Admin" asp-action="listOrders">Orders </a>
+                        <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Register</a>
                     </div>
-                }
-                @if (Context.User.IsInRole("user"))
-                {
-                    <div class="Links">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Goods" asp-action="Create">Create</a>
-                    </div>
-                    <div class="Links">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
-                    </div>
-                }
-                @if (Context.User.IsInRole("user") == false)
-                {
-                    <div class="Links">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
-                    </div>
-                }
-                    <div class="Links">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
-                    </div>
-                </div>
+            </div>
         </nav>
     </header>
     <div class="container">

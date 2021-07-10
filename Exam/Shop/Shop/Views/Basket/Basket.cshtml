@@ -1,11 +1,12 @@
 ﻿@model IEnumerable<Shop.Models.Goods>
 
-@{
-    ViewData["Title"] = "View";
-}
-
-<h1>Basket</h1>
-
+    @{
+        ViewData["Title"] = "Basket";
+    }
+    <h2>Basket</h2>
+    @if (Model.Any())
+    {
+        <a asp-action="DeleteAll" class="btn btn-primary">Delete All</a>
         <div id="ProductList">
             @foreach (var item in Model)
             {
@@ -13,8 +14,15 @@
                     <img src="@item.Picture" />
                     <p class="nameProd">@item.Name</p>
                     <p class="price">@item.Price</p>
-                    <a asp-action="Details" asp-controller="Goods" asp-route-id="@item.ID">Details</a> |
-                    <a asp-action="Buy" asp-route-id="@item.ID">Buy</a>
+                    <a asp-action="Details" asp-controller="Goods" asp-route-id="@item.ID" asp-route-fromBasket="@true">Details</a> |
+                    <a asp-action="DeleteItem" asp-route-id="@item.ID">Delete</a> |
+                    <a asp-action="Buy" asp-route-idGood="@item.ID">Buy</a>
                 </div>
             }
         </div>
+    }
+    @if (Model.Any() == false)
+    {
+        @Html.Partial(@"\Partial\EmptyPage")
+    }
+

@@ -24,9 +24,64 @@ namespace Shop.Controllers
         public GoodsController(ShopContext context)
         {        
             _context = context;
-        }
-        public async Task<IActionResult> ListGoods(string sortName = "")
+            if (!_context.Roles.Any())
+            {
+                _context.Roles.Add(new Role { Name = "user" });
+                _context.Roles.Add(new Role { Name = "admin" });
+            }
+            _context.SaveChanges();
+            int idUserTest = 2;
+            if (!_context.Users.Any())
+            {
+                var idAdminRole = _context.Roles.FirstOrDefault(Role => Role.Name == "admin").Id;
+                var idUserRole = _context.Roles.FirstOrDefault(Role => Role.Name == "user").Id;
+
+                _context.Users.Add(new Users { Email = "admin@admin.com", Password = "A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=", RoleId = idAdminRole });
+                _context.Users.Add(new Users { Email = "user@user.com", Password = "A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=", RoleId = idUserRole });
+                _context.SaveChanges();
+                idUserTest = _context.Users.ToList().Last().Id;
+            }
+            _context.SaveChanges();
+            if (!_context.Goods.Any())
+            {
+                _context.Goods.Add(new Goods
+                {
+                    Name = "Good One",
+                    Describe = "Descrie text",
+                    Price = 123,
+                    UserId = idUserTest
+                });
+                _context.Goods.Add(new Goods
+                {
+                    Name = "Good Two",
+                    Describe = "Descrie text",
+                    Price = 123,
+                    UserId = idUserTest
+                });
+                _context.Goods.Add(new Goods
+                {
+                    Name = "Good Three",
+                    Describe = "Descrie text",
+                    Price = 123,
+                    UserId = idUserTest
+                });
+            }
+            _context.SaveChanges();
+        }         
+
+        public async Task<IActionResult> ListGoods(string sortName = "", string valueSearch = null)
         {
+
+            if(valueSearch != null)
+            {
+                var resultList = _context.Goods.Where(Good => Good.Name.Contains(valueSearch)).ToList();
+                foreach (var item in resultList)
+                {
+                    LoadPicture(item);
+                }
+                return View(resultList);
+            }
+
             if (sortName == "")
             {
                 var GoodsLsit = await _context.Goods.ToListAsync();
@@ -79,18 +134,22 @@ namespace Shop.Controllers
             return RedirectToAction(nameof(ListGoods));
         }
 
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, bool fromBasket = false)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
+            ViewBag.FromBasket = false;
             var goods = await _context.Goods
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (goods == null)
             {
                 return NotFound();
+            }
+            if (fromBasket)
+            {
+                ViewBag.FromBasket = true;
             }
             LoadPicture(goods);
 
@@ -163,19 +222,18 @@ namespace Shop.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Describe,Price")] Goods goods, IFormFile uploadedFile)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Describe,Price,State")] Goods goods, IFormFile uploadedFile)
         {
             if (id != goods.ID)
             {
                 return NotFound();
             }
+            var newState = goods.State;
             goods = _context.Goods.FirstOrDefault(good => good.ID == goods.ID);
+            goods.State = newState;
 
             if (ModelState.IsValid)
-            {
-                var listClaims = HttpContext.User.Claims.ToList();               
-                goods.UserId = int.Parse(listClaims[2].Value);
-                
+            {   
                 try
                 {
                     if (uploadedFile != null)

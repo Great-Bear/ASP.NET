@@ -1,0 +1,33 @@
+﻿@model Shop.Models.Users
+
+    @{
+        ViewData["Title"] = "Edit";
+    }
+
+    <h1>Edit</h1>
+    <h4>User</h4>
+    <form action="EditRole" controller="Account" method="post">
+        <input type="text" name="IdUser" value="@Model.Id" hidden />
+        <select class="form-control" name="Role">
+            @foreach (var item in ViewBag.List)
+            {
+                if (item.Id == @Model.RoleId)
+                {
+                    <option selected>@item.Name</option>
+                }
+                else
+                {
+                    <option>@item.Name</option>
+                }
+            }
+         </select>
+        <button type="submit">Save</button>
+    </form>
+
+    <div>
+        <a asp-action="Users" asp-controller="Admin">Back to list user</a>
+    </div>
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }

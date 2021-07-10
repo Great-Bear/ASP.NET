@@ -1,73 +1,73 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+﻿a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
 }
 
 /* Provide sufficient contrast against white background */
 a {
-  color: #0366d6;
+    color: #0366d6;
 }
 
 .btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
 }
 
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
+
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .border-top {
-  border-top: 1px solid #e5e5e5;
+    border-top: 1px solid #e5e5e5;
 }
+
 .border-bottom {
-  border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
 }
 
 .box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
 button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
+    font-size: 1rem;
+    line-height: inherit;
 }
 
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
 }
+
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px; /* Vertically center the text there */
 }
 
 #mainBlock {
@@ -85,13 +85,15 @@ body {
     flex: 1.5;
     border-bottom: 2px solid black;
 }
-#leftPanel > ul > li:hover {
-    color: red;
-    cursor: pointer;
-}
-#leftPanel > ul > li > a:hover {
-    color: white;
-}
+
+    #leftPanel > ul > li:hover {
+        color: red;
+        cursor: pointer;
+    }
+
+    #leftPanel > ul > li > a:hover {
+        color: white;
+    }
 
 #ProductList {
     display: flex;
@@ -99,89 +101,90 @@ body {
     flex: 10;
 }
 
-#ProductList > div {
-    height: 360px;
-    width: 290px;
-    background-color: rgb(255, 249, 249);
-    border-right: 2px solid black;
-    border-bottom: 2px solid black;
-}
+    #ProductList > div {
+        height: 360px;
+        width: 290px;
+        background-color: rgb(255, 249, 249);
+        border-right: 2px solid black;
+        border-bottom: 2px solid black;
+    }
 
-#ProductList > div:hover {
-    background-color: rgb(240, 232, 232);
-}
+        #ProductList > div:hover {
+            background-color: rgb(240, 232, 232);
+        }
 
-#ProductList > div > img {
-    width: 80%;
-    height: 60%;
-    margin-left: 10%;
-    margin-top: 5%;
-}
+        #ProductList > div > img {
+            width: 80%;
+            height: 60%;
+            margin-left: 10%;
+            margin-top: 5%;
+        }
 
-#ProductList > div .price {
-    color: rgb(245, 42, 42);
-    margin-left: 10%;
-    font-size: 170%;
-}
+        #ProductList > div .price {
+            color: rgb(245, 42, 42);
+            margin-left: 10%;
+            font-size: 170%;
+        }
 
-#ProductList > div .nameProd {
-    margin-left: 10%;
-    font-size: 100%;
-}
+        #ProductList > div .nameProd {
+            margin-left: 10%;
+            font-size: 100%;
+        }
 
-#ImgDetails{
+#ImgDetails {
     width: 300px;
     height: 300px;
     background-color: gray;
 }
 
-.price
-{
+.price {
     margin-bottom: 0;
 }
 
 #basket {
-   width: 75px;
-   height: 75px;
+    width: 75px;
+    height: 75px;
 }
+
 #basketBlock {
     position: absolute;
     width: auto;
     right: 155px;
     top: 55px;
 }
-#basketLength
-{
+
+#basketLength {
     position: absolute;
     color: red;
     top: 15px;
     left: 40px;
 }
-#NoResult
-{
+
+#NoResult {
     width: 300px;
-    height:300px;
-    float:left;
+    height: 300px;
+    float: left;
     margin-left: 300px;
 }
+
 #NoResulText {
     text-align: center;
     margin-left: 420px;
 }
+
 .Links:hover {
     background-color: rgb(240, 232, 232);
 }
-.typeProd
-{
+
+.typeProd {
     margin-left: 20px;
 }
-.container
-{
+
+.container {
     margin-left: 50px;
-    width:auto;
+    width: auto;
 }
 
-.pb-3
-{
-    width:1800px;
+.pb-3 {
+    width: auto;
 }
