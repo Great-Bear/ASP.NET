@@ -14,6 +14,8 @@ namespace Shop.Models
         public DbSet<Users> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<StateOrder> StateOrders { get; set; }
+        public DbSet<TypeGood> TypeGoods { get; set; }
 
         public ShopContext (DbContextOptions<ShopContext> options)
             : base(options)

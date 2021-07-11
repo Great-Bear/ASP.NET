@@ -1,12 +1,23 @@
 ﻿@model IEnumerable<Shop.Models.Users>
 
 @{
-    ViewData["Title"] = "Goods list";
+    ViewData["Title"] = "Users list";
 }
     <a asp-controller="Account" asp-action="Register" class="btn btn btn-primary">Add new User</a>
     <ul>
         @foreach(var item in @Model)
         {
-            <li>@item.Email | @item.Role.Name | <a asp-controller="Account" asp-action="Edit" asp-route-IdUser="@item.Id">Edit</a></li>
+        <li>
+            @item.Email | @item.Role.Name |
+            @if (@item.State == true)
+            {
+                <span>Is active</span>
+            }
+            @if (@item.State == false)
+            {
+                <span>Is not active</span>
+            }
+            <a asp-controller="Account" asp-action="Edit" asp-route-IdUser="@item.Id">| Edit</a>
+        </li>
         }
     </ul>

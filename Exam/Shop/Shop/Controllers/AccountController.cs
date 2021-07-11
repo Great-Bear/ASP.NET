@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using CookiesAndSessions.Extentions;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Shop.Models;
@@ -43,12 +45,19 @@ namespace Shop.Controllers
                     .Include(user => user.Role)
                     .FirstOrDefault(u => u.Email == model.Email && u.Password == passwordHash);
 
+
                 if (user != null)
                 {
+                    if (user.State == false)
+                    {
+                        ModelState.AddModelError("", "Sorry but your account was bannet");
+                        return View(model);
+                    }
                     await Authenticate(user);
                     return RedirectToAction("ListGoods", "Goods");
                 }
 
+                
                 ModelState.AddModelError("", "Invalid login or password");
             }
 
@@ -101,7 +110,8 @@ namespace Shop.Controllers
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
-            
+            HttpContext.Session.SetObject("basket", new List<Goods>(), typeof(List<Goods>));
+            HttpContext.Session.SetInt32("basketLength", 0);
             await HttpContext.SignOutAsync();
             return RedirectToAction("ListGoods", "Goods");
         }
@@ -111,7 +121,7 @@ namespace Shop.Controllers
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
                 new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role?.Name),
-                new Claim("ID",user.Id.ToString()),
+                new Claim("ID", user.Id.ToString()),
             };
 
             ClaimsIdentity identity = new ClaimsIdentity(
@@ -139,10 +149,11 @@ namespace Shop.Controllers
 
             return View(user);
         }
-        public IActionResult EditRole(string Role, int IdUser)
+        public IActionResult EditRole(string Role, int IdUser, bool stateAccount)
         {
-            _context.Users.FirstOrDefault(user => user.Id == IdUser).RoleId =
-            _context.Roles.FirstOrDefault(role => role.Name == Role).Id;
+            var user = _context.Users.FirstOrDefault(user => user.Id == IdUser);
+            user.RoleId = _context.Roles.FirstOrDefault(role => role.Name == Role).Id;
+            user.State = stateAccount;
             _context.SaveChanges();
 
             return RedirectToAction("Users","Admin");

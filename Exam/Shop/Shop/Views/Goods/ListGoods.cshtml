@@ -28,12 +28,12 @@
             <li>
                 <a asp-action="ListGoods">All</a>
             </li>
-            <li>
-                <a asp-action="ListGoods" asp-route-sortName="Type 1">Type 1</a>
-            </li>
-            <li>
-                <a asp-action="ListGoods" asp-route-sortName="Type 2">Type 2</a>
-            </li>
+            @foreach (var item in ViewBag.TypeGoods)
+            {
+                <li>
+                    <a asp-action="ListGoods" asp-route-sortName="@item.Name">@item.Name</a>
+                </li>
+            }
         </ul>
     </div>
     <div id="ProductList">
@@ -44,7 +44,7 @@
         <div>
             <img src="@item.Picture" />
             <p class="nameProd">@item.Name</p>
-            <span class="typeProd">@item.Type</span>
+            <span class="typeProd">@item.Type.Name</span>
             <p class="price">@item.Price</p>
 
             <a asp-action="Details" asp-route-id="@item.ID">Details</a> |

@@ -13,8 +13,12 @@ namespace Shop.Models
         public int GoodId { get; set; }
         public Goods Good { get; set; }
 
-        [ForeignKey("User")]
         public int UserId { get; set; }
         public Users User { get; set; }
+
+        public int StateOrderId { get; set; }
+        public StateOrder StateOrder { get; set; }
+
+
     }
 }

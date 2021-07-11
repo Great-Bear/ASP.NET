@@ -22,10 +22,13 @@
                 <input asp-for="Describe" class="form-control" />
                 <span asp-validation-for="Describe" class="text-danger"></span>
             </div>
-            <div class="form-group">            
-                <select asp-for="Type" class="form-control">
-                    <option>Type 1</option>
-                    <option>Type 2</option>
+            <div>
+                <label>Type</label>
+                <select name="typeName" class="form-control">
+                    @foreach (var item in ViewBag.TypeGoods)
+                    {
+                        <option>@item.Name</option>
+                    }
                 </select>
             </div>
             <div class="form-group">
@@ -35,7 +38,7 @@
             </div>
             <div class="form-group">
 
-                <input type="file" name="uploadedFile"/>
+                <input type="file" name="uploadedFile" />
 
             </div>
             <div class="form-group">

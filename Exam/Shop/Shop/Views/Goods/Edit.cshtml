@@ -24,6 +24,14 @@
                 <input asp-for="Describe" class="form-control" />
                 <span asp-validation-for="Describe" class="text-danger"></span>
             </div>
+            <div>
+                <select name="typeName" class="form-control">
+                    @foreach (var item in ViewBag.TypeGoods)
+                    {
+                     <option>@item.Name</option>
+                    }
+                </select>
+            </div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
                 <input asp-for="Price" class="form-control" />

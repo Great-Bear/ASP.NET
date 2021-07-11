@@ -32,7 +32,13 @@ namespace Shop.Controllers
             foreach (var item in basket)
             {
                     LoadPicture(item);
-            }      
+            }
+            var listClaims = HttpContext.User.Claims.ToList();
+            ViewBag.UnLoggedUser = false;
+            if (listClaims.Count == 0)
+            {
+                ViewBag.UnLoggedUser = true;
+            }
             return View(basket);
         }
         public IActionResult DeleteItem(int? id)
@@ -80,7 +86,10 @@ namespace Shop.Controllers
         {
             var listClaims = HttpContext.User.Claims.ToList();
             int idUser = int.Parse(listClaims[2].Value);
-            _context.Orders.Add(new Order { GoodId = idGood, UserId = idUser });
+
+            var defStateOrder = _context.StateOrders.FirstOrDefault(state => state.Name == "Waiting").ID;
+
+            _context.Orders.Add(new Order { GoodId = idGood, UserId = idUser, StateOrderId = defStateOrder });
             _context.SaveChanges();
 
             RemoveItemFormBasket(idGood);

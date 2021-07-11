@@ -1,38 +1,40 @@
 ﻿@model IEnumerable<Shop.Models.Order>
 
-@{
-    ViewData["Title"] = "Orders list";
-}
-
-<div id="ProductList">
-    @if (Model.Any())
-    {
-        @foreach (var item in Model)
+    @{
+        ViewData["Title"] = "Orders list";
+    }
+    <form action="listOrders" name="stateOrder" method="post">
+        <select name="StateOrder" class="form-control">
+            <option>All</option>
+            @foreach (var item in @ViewBag.StatesOrder)
+            {
+                <option>@item.Name</option>
+            }
+        </select>
+        <button type="submit" class="btn btn-primary">Search by type state order</button>
+    </form>
+    <div id="ProductList">
+        @if (Model.Any())
         {
-            <div>
-                <img src="@item.Good.Picture" />
-                <p class="nameProd">@item.Good.Name</p>
-                <span class="typeProd">@item.Good.Type</span>
-                <p class="price">@item.Good.Price</p>
+            @foreach (var item in Model)
+            {
+                <div>
+                    <img src="@item.Good.Picture" />
+                    <p class="nameProd">@item.Good.Name</p>
+                    <span class="typeProd">@item.Good.Type</span>
+                    <span class="typeProd">State: @item.StateOrder.Name</span>
+                    <p class="price">@item.Good.Price</p>
 
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                @if (ViewBag?.IdCurrUser == item.UserId)
-                {
-                    <a asp-action="Edit" asp-route-id="@item.ID">Edit |</a>
-                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-                }
-                @if (ViewBag?.IdCurrUser != item.UserId)
-                {
-                    <a asp-action="Buy" asp-route-id="@item.ID">Buy</a>
-                }
-            </div>
+                    <a asp-action="Details" asp-controller="Goods" asp-route-id="@item.ID">Details</a> |
+                    <a asp-action="Edit" asp-controller="Order" asp-route-idOrder="@item.ID">Edit |</a>
+                </div>
+            }
         }
-    }
-    @if (Model.Any() == false)
-    {
-        <img id="NoResult" src="~/Imgs/SadSmile.png" />
-        <p id="NoResulText">No result</p>
-    }
-</div>
+        @if (Model.Any() == false)
+        {
+            <img id="NoResult" src="~/Imgs/SadSmile.png" />
+            <p id="NoResulText">No result</p>
+        }
+    </div>
 
 

@@ -18,13 +18,27 @@ namespace Shop.Controllers
         }
 
 
-        public IActionResult ListOrders()
+        public IActionResult ListOrders(string stateOrder = null)
         {
-            var Orders = _context.Orders.Include(order => order.Good).ToList();
-
+            List<Order> Orders;
+            if (stateOrder != null && stateOrder != "All")
+            {
+                Orders = _context.Orders.Include(order => order.Good).Include(order => order.StateOrder).
+                                         Where(order => order.StateOrder.Name == stateOrder).ToList();
+            }
+            else
+            {
+                Orders = _context.Orders.Include(order => order.Good).Include(order => order.StateOrder).ToList();
+            }
+          
+            ViewBag.StatesOrder = _context.StateOrders.ToList();
             foreach (var item in Orders)
             {
-                LoadPicture(item.Good);
+                if(item.Good.IsLoadPicture == false) 
+                {
+                    LoadPicture(item.Good);
+                }
+                   
             }
 
             return View(Orders);
@@ -39,6 +53,7 @@ namespace Shop.Controllers
         public void LoadPicture(Goods goods)
         {
             string fileName = goods.Picture;
+            
             if (fileName == null || System.IO.File.Exists(@$".\Imgs\{fileName}") == false)
             {
                 fileName = "empty.jpg";
@@ -49,6 +64,7 @@ namespace Shop.Controllers
             {
                 goods.Picture = "data:image / jpeg; base64," +
                                 Convert.ToBase64String(binaryReader.ReadBytes((int)picture.Length));
+                goods.IsLoadPicture = true;
             }
         }
     }

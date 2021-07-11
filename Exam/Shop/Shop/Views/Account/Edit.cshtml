@@ -20,7 +20,12 @@
                     <option>@item.Name</option>
                 }
             }
-         </select>
+        </select>
+        <label style="font-size:large" for="State">State: </label>
+        <!--<input type="checkbox" name="stateAccount" checked="@Model.State" class="form-control" style="width:22px; height:22px;" />
+        -->
+        <input type="checkbox" name="stateAccount" asp-for="@Model.State" class="form-control" style="width:22px; height:22px;" />
+        <br />
         <button type="submit">Save</button>
     </form>
 
