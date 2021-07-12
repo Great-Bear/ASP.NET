@@ -28,7 +28,15 @@
                 <select name="typeName" class="form-control">
                     @foreach (var item in ViewBag.TypeGoods)
                     {
-                     <option>@item.Name</option>
+                        if (@Model.Type.Name == @item.Name)
+                        {
+                            <option selected>@item.Name</option>
+                        }
+                        else
+                        {
+                            <option>@item.Name</option>
+                        }
+
                     }
                 </select>
             </div>
